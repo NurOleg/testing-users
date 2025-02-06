@@ -86,6 +86,33 @@
                                 "schema": {}
                             }
                         }
+                    },
+                    "422": {
+                        "description": "Unpocessable content",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The FIELD_NAME field confirmation does not match."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "FIELD_NAME": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }

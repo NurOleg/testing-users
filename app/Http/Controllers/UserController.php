@@ -32,6 +32,19 @@ class UserController extends Controller
      *         description="User created",
      *         @OA\JsonContent(),
      *     ),
+     *     @OA\Response(
+     *          response=422,
+     *          description="Unpocessable content",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="message", type="string", example="The FIELD_NAME field confirmation does not match."),
+     *              @OA\Property(property="errors", type="object",
+     *                  @OA\Property(property="FIELD_NAME", type="array",
+     *                      @OA\Items(type="string")
+     *                  ),
+     *              ),
+     *          ),
+     *      ),
      * ),
      */
     public function create(UserRegisterRequest $request): JsonResponse
@@ -59,6 +72,15 @@ class UserController extends Controller
      *             @OA\Property(property="data", type="object", ref="#/components/schemas/UserResource"),
      *         ),
      *     ),
+     *     @OA\Response(
+     *           response=404,
+     *           description="User not found",
+     *           @OA\JsonContent(
+     *               type="object",
+     *               @OA\Property(property="message", type="string", example="No query results for model [App\Models\User]"),
+     *               @OA\Property(property="exception", type="string", example="Symfony\Component\HttpKernel\Exception\NotFoundHttpException"),
+     *           ),
+     *       ),
      * ),
      */
     public function show(User $user): UserResource

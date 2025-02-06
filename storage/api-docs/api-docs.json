@@ -1,0 +1,227 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "users",
+        "version": "0.0.1"
+    },
+    "paths": {
+        "/api/v1/user": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Получение списка пользователей",
+                "operationId": "user-list",
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/UserResource"
+                                            }
+                                        },
+                                        "links": {
+                                            "$ref": "#/components/schemas/links"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/meta"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Регистрация пользователя",
+                "operationId": "create-user",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "example@example.ru"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "minLength": 8,
+                                        "example": "password"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "minLength": 8,
+                                        "example": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User created",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/user/{user_id}": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Получение пользователя",
+                "operationId": "user-show",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/UserResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "datetime": {
+                "type": "string",
+                "example": "2025-02-06 21:25:49"
+            },
+            "links": {
+                "properties": {
+                    "first": {
+                        "type": "string",
+                        "example": "http://localhost/api/v1/user?page=1"
+                    },
+                    "last": {
+                        "type": "string",
+                        "example": "http://localhost/api/v1/user?page=15",
+                        "nullable": "true"
+                    },
+                    "prev": {
+                        "type": "string",
+                        "example": "http://localhost/api/v1/user?page=1",
+                        "nullable": "true"
+                    },
+                    "next": {
+                        "type": "string",
+                        "example": "http://localhost/api/v1/user?page=2",
+                        "nullable": "true"
+                    }
+                },
+                "type": "object"
+            },
+            "meta": {
+                "properties": {
+                    "current_page": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "from": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "path": {
+                        "type": "string",
+                        "example": "http://localhost/api/v1/user"
+                    },
+                    "per_page": {
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "to": {
+                        "type": "integer",
+                        "example": "3"
+                    }
+                },
+                "type": "object"
+            },
+            "UserResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": "1",
+                        "nullable": false
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "John Doe",
+                        "nullable": false
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "John@Doe.com",
+                        "nullable": false
+                    },
+                    "created_at": {
+                        "$ref": "#/components/schemas/datetime"
+                    },
+                    "updated_at": {
+                        "$ref": "#/components/schemas/datetime"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "User",
+            "description": "User"
+        }
+    ]
+}
